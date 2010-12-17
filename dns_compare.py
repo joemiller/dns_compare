@@ -30,7 +30,7 @@
 
 from optparse import OptionParser
 
-import sys
+import sys, socket
 from pprint import pprint
 
 try:
@@ -49,8 +49,8 @@ parser.add_option("-z", "--zone", dest="zone", metavar="DOMAIN",
 					help="name of the domain we're checking (eg: domain.com)")
 parser.add_option("-f", "--file", dest="zonefile", metavar="FILE",
 					help="zone file to load records from")
-parser.add_option("-s", "--server", dest="nameserver", metavar="IP_ADDRESS",
-					help="DNS server to compare zone file against (must be IP, not hostname)")
+parser.add_option("-s", "--server", dest="nameserver", metavar="HOST",
+					help="DNS server to compare zone file against")
 # optional .. options
 parser.add_option("-v", "--verbose", dest="verbose", action="store_true", default=False,
 					help="print detailed results of each action")				
@@ -71,7 +71,7 @@ if opts.zone == None or opts.zonefile == None or opts.nameserver == None:
 z = dns.zone.from_file(opts.zonefile, origin=opts.zone, relativize=False)
 
 r = dns.resolver.Resolver(configure=False)
-r.nameservers = [opts.nameserver]
+r.nameservers = [socket.gethostbyname(opts.nameserver)]
 
 matches=0
 mismatches=0
@@ -124,3 +124,10 @@ print "Mis-matches: ", mismatches
 
 if opts.verbose == False and mismatches > 0:
 	print " (re-run with --verbose to see details of the mis-matches )"
+	
+def lookup_dns_from_local_server(addr):
+	iplist = []
+	ans = dns.resolver.query(addr)
+	for ip in ans.rrset.items:
+		iplist.append(ip.to_text())
+	return iplist
