@@ -8,13 +8,13 @@ the data in a zone file.
 
 Motivation
 ----------
-It is very helpful, when you are migrating from one DNS server to another to be able to
-verify that all the records imported correctly.
+It is very helpful when migrating from one DNS server to another to be able to
+verify that all records imported correctly.
 
-In my case, I used this tool to help me during a migration of multiple domains from
+In my case, I used this tool to help me migrate multiple domains from
 Windows 2000 DNS and GoDaddy DNS (which both export BIND zone files) into Amazon's
 Route53 DNS service.  With this tool, I could confidently prove that all records
-properly imported into Route53.
+properly imported into Route53 before changing the whois records for each domain.
 
 Example Usage:
 --------------
@@ -56,4 +56,6 @@ TODO:
 
 Author
 ------
-Joe Miller, http://github.com/joemiller
+Joe Miller, 
+http://github.com/joemiller
+http://www.joeym.net
