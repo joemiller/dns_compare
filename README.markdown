@@ -31,27 +31,24 @@ Verbose:
 	``
     $ dns_compare.py -z example.com --file example.com.zone --server 10.1.1.1 --verbose
 	----
-	[Match] querying 10.1.1.1: name='www.example.com.' type='5' class='1' ...
-	Expected:  www.example.com.
-	Got     :  example.com.
+	(Match) query: www.example.com. ...
+	Expected:  0 IN CNAME example.com.
+	Received:  0 IN CNAME example.com.
 	----
-	[Match] querying 10.1.1.1: name='mail.example.com.' type='5' class='1' ...
-	Expected:  mail.example.com.
-	Got     :  vlessonsatt.example.com.
-	----
-	[MIS-MATCH] querying 10.1.1.1: name='example.com.' type='2' class='1' ...
-	Expected:  ns3.example.com.
-	Got     :  ns-1633.awsdns-12.co.uk.
+	(MIS-MATCH) query: example.com. ...
+	Expected:  60 IN A 10.0.0.1
+	Got     :  60 IN A 10.0.0.20
 	``
 
-You can also check the SOA and NS records by specifying the --soa and --ns options,
-respectively.  However, if you're migrating to a different DNS server or service,
-these will typically change which is why checking these record types is
-disabled by default.
+By default, TTL values will _not_ be compared.  Specify the --ttl option to
+enable TTL comparison.
+
+By default, SOA and NS records are ignored because these records are likely
+to change when migrating a zone between DNS services..  Specify --soa or --ns option,
+respectively, to enable checking of SOA and NS records.
 
 TODO:
 -----
-- In verbose output, resolve 'type' to name (eg: A, NS, MX)
 - Print separate count of NXDOMAIN in results?
 
 Author

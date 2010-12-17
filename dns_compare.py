@@ -58,12 +58,14 @@ parser.add_option("-a","--soa", dest="compare_soa", action="store_true", default
 					help="compare SOA records (default: false)")					
 parser.add_option("-n","--ns", dest="compare_ns", action="store_true", default=False,
 					help="compare NS records (default: false)")					
+parser.add_option("-t","--ttl", dest="compare_ttl", action="store_true", default=False,
+					help="compare TTL values (default: false)")					
 					
 (opts, remaining_args) = parser.parse_args()
 
 # check for required options, since optparse doesn't support required options
 if opts.zone == None or opts.zonefile == None or opts.nameserver == None:
-	print "Error: required arguments: --zone, --file, --server"
+	print "Error: required arguments: --zone, --file, --server (or --help)"
 	sys.exit(-1)
 
 z = dns.zone.from_file(opts.zonefile, origin=opts.zone, relativize=False)
@@ -73,34 +75,36 @@ r.nameservers = [opts.nameserver]
 
 matches=0
 mismatches=0
-for (name, ttl, rdata) in z.iterate_rdatas():
-	if rdata.rdtype == SOA and opts.compare_soa == False:
+for (name, rdataset) in z.iterate_rdatasets():
+	if rdataset.rdtype == SOA and opts.compare_soa == False:
 		continue
-	if rdata.rdtype == NS and opts.compare_ns == False:
+	if rdataset.rdtype == NS and opts.compare_ns == False:
 		continue
 			
 	match = False
-	result = ''
+	result = None
 	try:
-		ans = r.query(name, rdata.rdtype, rdata.rdclass)
-		for rd in ans:
-			result = rd
-			if rd == rdata:
+		ans = r.query(name, rdataset.rdtype, rdataset.rdclass)
+		result = ans.rrset.to_rdataset()
+		if result == rdataset:
+			if opts.compare_ttl:
+				if result.ttl == rdataset.ttl:				
+					match = True
+			else:
 				match = True
 	except DNSException, e:
-	 	result = e.__class__
 		pass
 		
 	if opts.verbose:
 		description = ''
 		if match:
-			description = '[Match]'
+			description = 'Match'
 		else:
-			description = '[MIS-MATCH]'
+			description = 'MIS-MATCH'
 		print "----"
-		print "%s querying %s: name='%s' type='%s' class='%d' ..." % (description, opts.nameserver, name, rdata.rdtype, rdata.rdclass)
-		print "Expected: ", rdata
-		print "Got     : ", rd
+		print "(%s) query: %s ..." % (description, name)
+		print "Expected: ", rdataset
+		print "Received: ", result
 	
 	if match:
 		if opts.verbose == False:
