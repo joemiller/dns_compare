@@ -57,5 +57,5 @@ TODO:
 Author
 ------
 Joe Miller, 
-http://github.com/joemiller
-http://www.joeym.net
+- http://github.com/joemiller
+- http://www.joeym.net
