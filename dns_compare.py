@@ -68,7 +68,7 @@ if opts.zone == None or opts.zonefile == None or opts.nameserver == None:
 	print "Error: required arguments: --zone, --file, --server (or --help)"
 	sys.exit(-1)
 
-z = dns.zone.from_file(opts.zonefile, origin=opts.zone, relativize=False)
+z = dns.zone.from_file(opts.zonefile, origin=opts.zone, relativize=False, check_origin=False)
 
 r = dns.resolver.Resolver(configure=False)
 r.nameservers = [socket.gethostbyname(opts.nameserver)]
