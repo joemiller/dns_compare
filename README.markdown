@@ -1,5 +1,6 @@
-dns_compare.py - Compare data from a BIND zone file to data returned by an authoritative DNS server.
+dns_compare.py
 =====================================================================================================
+Compare data from a BIND zone file to data returned by an authoritative DNS server.
 
 Purpose
 -------
