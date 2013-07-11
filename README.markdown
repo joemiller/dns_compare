@@ -23,7 +23,7 @@ a set of domains from Ziergo to Dyn.
 Example Usage:
 --------------
 Basic operation:
-	```
+
     $ dns_compare.py -z example.com --file example.com.zone --server 10.1.1.1
     ............................................X
     (MIS-MATCH) query: nss4.example.com.
@@ -42,10 +42,9 @@ Basic operation:
     Results:
     Matches:      69
     Mis-matches:  3
-    ```
 
 Verbose:
-	```
+
     $ dns_compare.py -z example.com --file example.com.zone --server 10.1.1.1 --verbose
 	----
 	(Match) query: www.example.com. ...
@@ -55,7 +54,6 @@ Verbose:
 	(MIS-MATCH) query: example.com. ...
 	Expected:  60 IN A 10.0.0.1
 	Got     :  60 IN A 10.0.0.20
-	```
 
 By default, SOA and NS records are ignored because these records are likely
 to change when migrating a zone between DNS services..  Specify `--soa` or `--ns` option,
