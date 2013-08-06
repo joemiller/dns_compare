@@ -41,7 +41,7 @@ try:
 except ImportError:
     print "Please install dnspython:"
     print "$ sudo pip install dnspython"
-    sys.exit(-1)
+    sys.exit(1)
 
 
 if __name__ == '__main__':
@@ -67,12 +67,16 @@ if __name__ == '__main__':
     # check for required options, since optparse doesn't support required options
     if opts.zone == None or opts.zonefile == None or opts.nameserver == None:
         print "Error: required arguments: --zone, --file, --server (or --help)"
-        sys.exit(-1)
+        sys.exit(2)
 
     z = dns.zone.from_file(opts.zonefile, origin=opts.zone, relativize=False)
 
     r = dns.resolver.Resolver(configure=False)
-    r.nameservers = [socket.gethostbyname(opts.nameserver)]
+    try:
+        r.nameservers = socket.gethostbyname_ex(opts.nameserver)[2]
+    except socket.error:
+        print "Error: could not resolve 'host' %s" % opts.nameserver
+        sys.exit(3)
 
     matches=0
     mismatches=0
