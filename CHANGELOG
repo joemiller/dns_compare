@@ -1,0 +1,11 @@
+0.0.3   2013/08/06
+- added setup.py to allow for installation via pip
+- changed exit values from negative numbers to positive numbers
+- added CHANGELOG
+- added LICENSE
+
+0.0.2   2013/07/11
+- improved output 
+
+0.0.1   2010/12/16
+- initial release

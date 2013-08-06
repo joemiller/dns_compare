@@ -17,14 +17,20 @@ Windows 2000 DNS and GoDaddy DNS (which both export BIND zone files) into Amazon
 Route53 DNS service.  With this tool, I could confidently prove that all records
 properly imported into Route53 before changing the whois records for each domain.
 
-UPDATED (7/11/2013): Cleaned up the script a bit and refacdtored a few things while migrating
+UPDATED (7/11/2013): Cleaned up the script and output a bit and refactored a few things while migrating
 a set of domains from Ziergo to Dyn.
+
+Installation
+------------
+
+    pip install git+http://github.com/joemiller/dns_compare.git#egg=dns_compare
+
 
 Example Usage:
 --------------
 Basic operation:
 
-    $ dns_compare.py -z example.com --file example.com.zone --server 10.1.1.1
+    $ dns_compare -z example.com --file example.com.zone --server 10.1.1.1
     ............................................X
     (MIS-MATCH) query: nss4.example.com.
      Expected:  300 IN A 142.229.40.28
@@ -45,7 +51,7 @@ Basic operation:
 
 Verbose:
 
-    $ dns_compare.py -z example.com --file example.com.zone --server 10.1.1.1 --verbose
+    $ dns_compare -z example.com --file example.com.zone --server 10.1.1.1 --verbose
 	----
 	(Match) query: www.example.com. ...
 	Expected:  0 IN CNAME example.com.
