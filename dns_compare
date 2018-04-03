@@ -104,8 +104,14 @@ if __name__ == '__main__':
             description = 'Match' if match else 'MIS-MATCH'
             print "----"
             print "(%s) query: %s" % (description, name)
-            print "Expected: ", rdataset
-            print "Received: ", result
+            if result != None and len(result) > 1:
+                print "Expected:"
+                print rdataset
+                print "Received: "
+                print result
+            else:
+                print "Expected: ", rdataset
+                print "Received: ", result
 
         if match:
             if not opts.verbose:
@@ -116,8 +122,14 @@ if __name__ == '__main__':
             if not opts.verbose:
                 sys.stdout.write('X')
                 print "\n(MIS-MATCH) query: %s" % name
-                print " Expected: ", rdataset
-                print " Received: ", result
+                if result != None and len(result) > 1:
+                    print "Expected:"
+                    print rdataset
+                    print "Received: "
+                    print result
+                else:
+                    print "Expected: ", rdataset
+                    print "Received: ", result
                 sys.stdout.flush()
             mismatches += 1
     print "done"
