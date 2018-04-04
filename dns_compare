@@ -63,7 +63,7 @@ if __name__ == '__main__':
     parser.add_option("-t","--ttl", dest="compare_ttl", action="store_false", default=True,
                         help="compare TTL values (default: true)")
     parser.add_option("-c","--cname", dest="lookup_cnames", action="store_true", default=False,
-                        help="lookup cname-values that dosn't match (default: false)")
+                        help="lookup cname-values that do not match (default: false)")
     (opts, remaining_args) = parser.parse_args()
 
     # check for required options, since optparse doesn't support required options
