@@ -1,20 +1,7 @@
 #!/usr/bin/python
 #
-# dns_compare.py - Compare the data in a BIND zone file to the data being returned
-#                  by an authoritative DNS server.
-#
-# Purpose:
-#   Use this tool to verify the data being returned by an authoritative DNS server
-#   matches the data in a zone file.
-#
-# Use case:
-#   This is useful, for example, when you are migrating from one DNS server to another and
-#   need to verify that all the records imported correctly.
-#
-#   In my case, I used this tool to help me during a migration of multiple domains from
-#   Windows 2000 DNS and GoDaddy DNS (which can both export BIND zone files) into Amazon's
-#   Route53 DNS service.  With this tool, I could confidently prove that all records
-#   properly imported into Route53.
+# dns_compare.py - Compare the data in a BIND zone file to the data being
+#                  returned by an authoritative DNS server.
 #
 # Example usage:
 #       $ dns_compare.py -z example.com --file example.com.zone --server 10.1.1.1
