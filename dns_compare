@@ -12,8 +12,8 @@ try:
     import dns.resolver
     import dns.zone
     from dns.exception import DNSException
-    from dns.rdataclass import *
-    from dns.rdatatype import *
+    from dns.rdataclass import IN
+    from dns.rdatatype import SOA, NS, CNAME, A
 except ImportError:
     print("Please install dnspython:")
     print("$ sudo pip install dnspython")
@@ -24,27 +24,34 @@ if __name__ == '__main__':
     parser = OptionParser()
     # required options
     parser.add_option("-z", "--zone", dest="zone", metavar="DOMAIN",
-                        help="name of the domain we're checking (eg: domain.com)")
+                      help="name of the domain we're checking "
+                           "(eg: domain.com)")
     parser.add_option("-f", "--file", dest="zonefile", metavar="FILE",
-                        help="zone file to load records from")
+                      help="zone file to load records from")
     parser.add_option("-s", "--server", dest="nameserver", metavar="HOST",
-                        help="DNS server to compare zone file against")
+                      help="DNS server to compare zone file against")
     # optional ... options
-    parser.add_option("-v", "--verbose", dest="verbose", action="store_true", default=False,
-                        help="print detailed results of each action")
-    parser.add_option("-a","--soa", dest="compare_soa", action="store_true", default=False,
-                        help="compare SOA records (default: false)")
-    parser.add_option("-n","--ns", dest="compare_ns", action="store_true", default=False,
-                        help="compare NS records (default: false)")
-    parser.add_option("-t","--ttl", dest="compare_ttl", action="store_false", default=True,
-                        help="compare TTL values (default: true)")
-    parser.add_option("-c","--cname", dest="lookup_cnames", action="store_true", default=False,
-                        help="lookup cname-values that do not match (default: false)")
+    parser.add_option("-v", "--verbose", dest="verbose", action="store_true",
+                      default=False,
+                      help="print detailed results of each action")
+    parser.add_option("-a", "--soa", dest="compare_soa", action="store_true",
+                      default=False,
+                      help="compare SOA records (default: false)")
+    parser.add_option("-n", "--ns", dest="compare_ns", action="store_true",
+                      default=False,
+                      help="compare NS records (default: false)")
+    parser.add_option("-t", "--ttl", dest="compare_ttl", action="store_false",
+                      default=True,
+                      help="compare TTL values (default: true)")
+    parser.add_option("-c", "--cname", dest="lookup_cnames",
+                      action="store_true", default=False,
+                      help="lookup cname-values that do not match "
+                           "(default: false)")
     (opts, remaining_args) = parser.parse_args()
 
-    # check for required options, since optparse doesn't support required options
-    if opts.zone == None or opts.zonefile == None or opts.nameserver == None:
-        print("Error: required arguments: --zone, --file, --server (or --help)")
+    # check for required options
+    if opts.zone is None or opts.zonefile is None or opts.nameserver is None:
+        print("Error: required arguments: --zone, --file, --server")
         sys.exit(2)
 
     z = dns.zone.from_file(opts.zonefile, origin=opts.zone, relativize=False)
@@ -56,9 +63,9 @@ if __name__ == '__main__':
         print("Error: could not resolve 'host' %s" % opts.nameserver)
         sys.exit(3)
 
-    matches=0
-    cnamematches=0
-    mismatches=0
+    matches = 0
+    cnamematches = 0
+    mismatches = 0
     for (name, rdataset) in z.iterate_rdatasets():
         if rdataset.rdtype == SOA and not opts.compare_soa:
             continue
@@ -68,7 +75,7 @@ if __name__ == '__main__':
         match = False
         result = None
         try:
-            ans = r.query(name, rdataset.rdtype, rdataset.rdclass)
+            ans = r.resolve(name, rdataset.rdtype, rdataset.rdclass)
             result = ans.rrset.to_rdataset()
             if result == rdataset:
                 if opts.compare_ttl:
@@ -79,11 +86,13 @@ if __name__ == '__main__':
         except DNSException:
             pass
 
-        if opts.lookup_cnames and match == False and result == None and rdataset.rdtype == dns.rdatatype.CNAME and rdataset.rdclass == dns.rdataclass.IN:
-            ans_a = r.query(name, dns.rdatatype.A, dns.rdataclass.IN)
+        if opts.lookup_cnames and match is False and result is None and \
+                rdataset.rdtype == CNAME and \
+                rdataset.rdclass == IN:
+            ans_a = r.query(name, A, IN)
             result_a = ans_a.rrset.to_rdataset()
-            if ans_a != None:
-                ans_cname = r.query(rdataset[0].target, dns.rdatatype.A, dns.rdataclass.IN)
+            if ans_a is not None:
+                ans_cname = r.query(rdataset[0].target, A, IN)
                 result_cname = ans_cname.rrset.to_rdataset()
                 print("----")
                 if result_cname == result_a:
@@ -100,7 +109,7 @@ if __name__ == '__main__':
             description = 'Match' if match else 'MIS-MATCH'
             print("----")
             print("(%s) query: %s" % (description, name))
-            if result != None and len(result) > 1:
+            if result is not None and len(result) > 1:
                 print("Expected:")
                 print(rdataset)
                 print("Received: ")
@@ -118,7 +127,7 @@ if __name__ == '__main__':
             if not opts.verbose:
                 sys.stdout.write('X')
                 print("\n(MIS-MATCH) query: %s" % name)
-                if result != None and len(result) > 1:
+                if result is not None and len(result) > 1:
                     print("Expected:")
                     print(rdataset)
                     print("Received: ")

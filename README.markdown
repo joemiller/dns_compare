@@ -1,4 +1,4 @@
-dns_compare.py
+dns_compare
 ==============
 Compare data from a BIND zone file to data returned by an authoritative DNS server.
 
