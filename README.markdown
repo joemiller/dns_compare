@@ -23,7 +23,7 @@ a set of domains from Ziergo to Dyn.
 Installation
 ------------
 
-    pip install git+http://github.com/joemiller/dns_compare.git#egg=dns_compare
+    pip install git+http://github.com/jfchevrette/dns_compare.git#egg=dns_compare
 
 
 Example Usage:
@@ -72,6 +72,6 @@ TODO:
 -----
 - Print separate count of NXDOMAIN in results?
 
-Author
+Attributions
 ------
-Joe Miller (http://github.com/joemiller) (http://joemiller.me) (https://twitter.com/miller_joe)
+Original author: Joe Miller (http://github.com/joemiller) (http://joemiller.me) (https://twitter.com/miller_joe)
