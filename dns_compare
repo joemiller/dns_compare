@@ -2,15 +2,6 @@
 #
 # dns_compare.py - Compare the data in a BIND zone file to the data being
 #                  returned by an authoritative DNS server.
-#
-# Example usage:
-#       $ dns_compare.py -z example.com --file example.com.zone --server 10.1.1.1
-#       ....X...X..done
-#       Results:
-#       9 passed / 2 fail
-#
-#   NOTE: use -v to get a very verbose view of each dns record as it is checked
-#
 
 from optparse import OptionParser
 
