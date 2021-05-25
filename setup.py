@@ -9,5 +9,6 @@ setup(
     url='https://github.com/joemiller/dns_compare',
     license='LICENSE',
     description="Test DNS servers",
-    long_description=open('README.markdown').read()
+    long_description=open('README.markdown').read(),
+    install_requires=['future']
 )
