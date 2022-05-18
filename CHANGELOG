@@ -1,3 +1,6 @@
+0.0.4   2022/05/18
+- switched to python3
+
 0.0.3   2013/08/06
 - added setup.py to allow for installation via pip
 - changed exit values from negative numbers to positive numbers

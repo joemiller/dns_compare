@@ -2,7 +2,7 @@ from distutils.core import setup
 
 setup(
     name='dns_compare',
-    version='0.0.3',
+    version='0.0.4',
     author='Joe Miller',
     author_email='joeym@joeym.net',
     scripts=['dns_compare'],
